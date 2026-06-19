@@ -244,14 +244,15 @@ def get_llm(api_key: str, model_name: str, temperature: float):
 
 def build_chain(llm, vectorstore):
     retriever = vectorstore.as_retriever(
-    search_kwargs={"k": 4}
-)
+        search_kwargs={"k": 4}
+    )
 
-chain = create_retrieval_chain(
-    retriever,
-    llm,
+    chain = create_retrieval_chain(
+        retriever,
+        llm,
+    )
+
     return chain
-)
 
 
 
