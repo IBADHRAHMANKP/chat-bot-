@@ -3,8 +3,8 @@ import os
 import tempfile
 from dotenv import load_dotenv
 
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains import ConversationalRetrievalChain
+from langchain.chains.retrieval import create_retrieval_chain
+#from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferWindowMemory
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
@@ -243,21 +243,16 @@ def get_llm(api_key: str, model_name: str, temperature: float):
 
 
 def build_chain(llm, vectorstore):
-    """Build a conversational retrieval chain."""
-    memory = ConversationBufferWindowMemory(
-        memory_key="chat_history",
-        return_messages=True,
-        output_key="answer",
-        k=8,
-    )
-    chain = ConversationalRetrievalChain.from_llm(
-        llm=llm,
-        retriever=vectorstore.as_retriever(search_kwargs={"k": 4}),
-        memory=memory,
-        return_source_documents=True,
-        verbose=False,
-    )
-    return chain
+    retriever = vectorstore.as_retriever(
+    search_kwargs={"k": 4}
+)
+
+chain = create_retrieval_chain(
+    retriever,
+    llm,
+)
+
+return chain
 
 
 # ── Session state init ────────────────────────────────────────────
@@ -408,8 +403,8 @@ if prompt := st.chat_input("Ask anything about your documents…", key="chat_inp
         # Get answer
         with st.spinner("🔮 Thinking…"):
             try:
-                result = st.session_state.chain.invoke({"question": prompt})
-                answer = result["answer"]
+                result = st.session_state.chain.invoke({"input": prompt})
+                answer = result.get("answer", result.get("output", ""))
 
                 # Build source info
                 sources = result.get("source_documents", [])
