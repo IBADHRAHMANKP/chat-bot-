@@ -1,0 +1,98 @@
+================================================================================
+                        NexusAI — Intelligent PDF Chatbot
+                              Features & Summary
+================================================================================
+
+OVERVIEW
+--------
+NexusAI is a Retrieval-Augmented Generation (RAG) chatbot that lets you upload
+PDF documents and have intelligent conversations about their content. It uses
+Google's Gemini AI for language understanding and generation, combined with
+vector search for accurate, context-grounded answers.
+
+
+TECH STACK
+----------
+  • Language .............. Python 3.10+
+  • UI Framework .......... Streamlit
+  • LLM ................... Google Gemini API (via LangChain)
+  • Orchestration ......... LangChain (Conversational Retrieval Chain)
+  • Embeddings ............ Sentence Transformers (all-MiniLM-L6-v2)
+  • Vector Database ....... ChromaDB (in-memory)
+  • PDF Reader ............ PyPDF
+  • Environment Vars ...... python-dotenv
+
+
+CORE FEATURES
+-------------
+  1. PDF Upload & Processing
+     - Upload one or multiple PDFs via the sidebar
+     - Documents are automatically split into 1000-character chunks
+       with 200-character overlap for better context preservation
+     - Chunks are embedded using Sentence Transformers and stored in Chroma
+
+  2. RAG-Powered Q&A
+     - Ask any question about your uploaded documents
+     - The system retrieves the 4 most relevant chunks from the vector store
+     - Gemini generates an answer grounded in those chunks
+     - Source page numbers are cited with every answer
+
+  3. Conversational Memory
+     - Remembers the last 8 exchanges for multi-turn conversations
+     - Follow-up questions work naturally without re-stating context
+
+  4. Model Selection
+     - Choose between Gemini 2.0 Flash, 2.5 Flash, or 2.5 Pro
+     - Adjustable temperature slider (0.0 – 1.0) for creativity control
+
+  5. Premium Dark UI
+     - Deep gradient dark theme (navy/indigo/purple tones)
+     - Glassmorphism cards with backdrop blur effects
+     - Gradient chat bubbles (indigo for user, frosted glass for AI)
+     - Smooth pop-in animations on messages
+     - Glowing dividers and hover effects
+     - Custom scrollbar styling
+     - Google Fonts (Inter) for clean typography
+
+  6. Session Statistics
+     - Real-time display of uploaded document count and chunk count
+     - Shown in styled stat cards in the sidebar
+
+  7. Clear Conversation
+     - One-click button to reset the chat history
+
+
+HOW TO RUN
+----------
+  1. Install dependencies:
+       py -m pip install -r requirements.txt
+
+  2. Set your Gemini API key:
+     - Edit the .env file:  GOOGLE_API_KEY=your_key_here
+     - OR paste it directly in the sidebar at runtime
+
+  3. Launch the app:
+       py -m streamlit run app.py
+
+  4. Open your browser to the URL shown (usually http://localhost:8501)
+
+  5. Upload PDFs in the sidebar and start chatting!
+
+
+FILE STRUCTURE
+--------------
+  chatbot/
+  ├── app.py              Main Streamlit application
+  ├── requirements.txt    Python package dependencies
+  ├── .env                Environment variables (API key)
+  └── FEATURES.txt        This file
+
+
+API KEY
+-------
+  Get a free Gemini API key at:  https://aistudio.google.com/app/apikey
+
+
+================================================================================
+                          Built with ❤ using Antigravity
+================================================================================
