@@ -250,9 +250,10 @@ def build_chain(llm, vectorstore):
 chain = create_retrieval_chain(
     retriever,
     llm,
+    return chain
 )
 
-return chain
+
 
 
 # ── Session state init ────────────────────────────────────────────
